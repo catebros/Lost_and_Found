@@ -1,5 +1,5 @@
 package net.javaguids.lost_and_found.model.users;
-
+import java.lang.String;
 import net.javaguids.lost_and_found.model.enums.UserRole;
 import java.time.LocalDateTime;
 
