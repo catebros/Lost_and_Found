@@ -13,5 +13,14 @@ module net.javaguids.lost_and_found {
     requires com.almasb.fxgl.all;
 
     opens net.javaguids.lost_and_found to javafx.fxml;
+    opens net.javaguids.lost_and_found.model.users to org.junit.platform.commons;
+    opens net.javaguids.lost_and_found.model.enums to org.junit.platform.commons;
+    opens net.javaguids.lost_and_found.database to org.junit.platform.commons;
+    opens net.javaguids.lost_and_found.exceptions to org.junit.platform.commons;
+    
     exports net.javaguids.lost_and_found;
+    exports net.javaguids.lost_and_found.model.users;
+    exports net.javaguids.lost_and_found.model.enums;
+    exports net.javaguids.lost_and_found.database;
+    exports net.javaguids.lost_and_found.exceptions;
 }

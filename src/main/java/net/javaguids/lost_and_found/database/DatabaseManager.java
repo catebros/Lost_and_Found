@@ -5,10 +5,10 @@ import java.sql.*;
 
 // DatabaseManager handles the database connection for the Lost and Found application.
 // This class implements the Singleton pattern to ensure only one database connection exists.
-//
+
 // IMPORTANT: Before running the application for the first time, you must initialize
 // the database.
-//
+
 // The database file is expected to be at: lostandfound.db
 public class DatabaseManager {
     // Singleton instance of DatabaseManager
