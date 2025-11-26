@@ -12,22 +12,13 @@ import net.javaguids.lost_and_found.exceptions.AuthException;
 
 import java.util.UUID;
 
-/**
- * Service class for user authentication and registration.
- * Manages user login, registration, logout, and session tracking.
- * Uses singleton pattern to maintain current user session.
- */
+// Service class for user authentication and registration. Manages user login, registration, logout, and session tracking.
 public class AuthService {
 
-    /** Currently logged-in user (null if no user is logged in) */
+    // Currently logged-in user (null if no user is logged in)
     private static User currentUser;
 
-    /**
-     * Authenticates a user with username and password.
-     * @param username The username to authenticate
-     * @param password The plain text password
-     * @return The authenticated User object if successful, null otherwise
-     */
+    // Authenticates a user with username and password.
     public static User login(String username, String password) {
         UserRepository userRepo = UserRepository.getInstance();
         User user = userRepo.getUserByUsername(username);
@@ -42,14 +33,7 @@ public class AuthService {
         return null;
     }
 
-    /**
-     * Registers a new user account with validation.
-     * @param username The desired username (must be unique and non-empty)
-     * @param email The user's email address (must be valid format)
-     * @param password The password (must be at least 8 characters)
-     * @return The newly created User object
-     * @throws AuthException if validation fails or username already exists
-     */
+    // Registers a new user account with validation.
     public static User register(String username, String email, String password) throws AuthException {
         // Validate username
         if (username == null || username.trim().isEmpty()) {
@@ -92,9 +76,7 @@ public class AuthService {
         return newUser;
     }
 
-    /**
-     * Logs out the current user and clears the session.
-     */
+    // Logs out the current user and clears the session
     public static void logout() {
         if (currentUser != null) {
             // TODO: Uncomment when ActivityLog is implemented
@@ -103,26 +85,17 @@ public class AuthService {
         }
     }
 
-    /**
-     * Gets the currently logged-in user.
-     * @return The current User object, or null if no user is logged in
-     */
+    // Gets the currently logged-in user.
     public static User getCurrentUser() {
         return currentUser;
     }
 
-    /**
-     * Checks if the current user has admin privileges.
-     * @return true if current user is an admin, false otherwise
-     */
+    // Checks if the current user has admin privileges.
     public static boolean isAdmin() {
         return currentUser != null && currentUser.getRole() == UserRole.ADMIN;
     }
 
-    /**
-     * Checks if a user is currently authenticated.
-     * @return true if a user is logged in, false otherwise
-     */
+    // Checks if a user is currently authenticated.
     public static boolean isAuthenticated() {
         return currentUser != null;
     }
