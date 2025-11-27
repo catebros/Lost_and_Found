@@ -4,8 +4,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-//import net.javaguids.lost_and_found.model.users.User;
-//import net.javaguids.lost_and_found.services.AuthService;
+import net.javaguids.lost_and_found.model.users.User;
+import net.javaguids.lost_and_found.services.AuthService;
 
     // Import statements for User and AuthService, assuming they exist in the specified packages ToDo: create these classes
 
