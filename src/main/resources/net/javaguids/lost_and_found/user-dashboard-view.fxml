@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="net.javaguids.lost_and_found.controllers.UserDashboardController"
+            prefHeight="850" prefWidth="1200">
+
+    <top>
+        <VBox spacing="10" style="-fx-background-color: #2196F3; -fx-padding: 20;">
+            <Label fx:id="usernameLabel" text="Welcome, User" textFill="white">
+                <font>
+                    <Font size="20" name="System Bold"/>
+                </font>
+            </Label>
+        </VBox>
+    </top>
+
+    <left>
+        <VBox spacing="10" style="-fx-background-color: #f5f5f5; -fx-padding: 20;" prefWidth="200">
+            <Button text="Post Item" onAction="#handlePostItem" prefWidth="160" styleClass="menu-button"/>
+            <Button text="Search Items" onAction="#handleSearch" prefWidth="160" styleClass="menu-button"/>
+            <Button text="Messages" onAction="#handleMessages" prefWidth="160" styleClass="menu-button"/>
+            <Region VBox.vgrow="ALWAYS"/>
+            <Button text="Logout" onAction="#handleLogout" prefWidth="160" styleClass="logout-button"/>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox spacing="15" style="-fx-padding: 20;">
+            <Label text="My Items">
+                <font>
+                    <Font size="18" name="System Bold"/>
+                </font>
+            </Label>
+            <ListView fx:id="myItemsList" prefHeight="300" VBox.vgrow="ALWAYS"/>
+        </VBox>
+    </center>
+
+</BorderPane>
