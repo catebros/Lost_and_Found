@@ -1,25 +1,17 @@
 package net.javaguids.lost_and_found.search;
 
 import net.javaguids.lost_and_found.model.enums.ItemType;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
-
 import static org.junit.jupiter.api.Assertions.*;
 
+// Test suite for SearchCriteria class. Tests validation and getter/setter functionality
 class SearchCriteriaTest {
-    private SearchCriteria criteria;
-
-    @BeforeEach
-    void setUp() {
-        criteria = new SearchCriteria();
-    }
 
     @Test
-    @DisplayName("Create search criteria and verify default values")
     void testDefaultConstructor() {
-        assertNotNull(criteria);
+        SearchCriteria criteria = new SearchCriteria();
+
         assertNull(criteria.getKeywords());
         assertNull(criteria.getCategory());
         assertNull(criteria.getLocation());
@@ -29,44 +21,78 @@ class SearchCriteriaTest {
     }
 
     @Test
-    @DisplayName("Set and get all fields")
-    void testSettersAndGetters() {
-        LocalDateTime dateFrom = LocalDateTime.of(2024, 1, 1, 0, 0);
-        LocalDateTime dateTo = LocalDateTime.of(2024, 12, 31, 23, 59);
+    void testValidate_EmptyCriteria() {
+        SearchCriteria criteria = new SearchCriteria();
 
-        criteria.setKeywords("wallet");
-        criteria.setCategory("Electronics");
-        criteria.setLocation("Library");
-        criteria.setType(ItemType.LOST);
-        criteria.setDateFrom(dateFrom);
-        criteria.setDateTo(dateTo);
-
-        assertEquals("wallet", criteria.getKeywords());
-        assertEquals("Electronics", criteria.getCategory());
-        assertEquals("Library", criteria.getLocation());
-        assertEquals(ItemType.LOST, criteria.getType());
-        assertEquals(dateFrom, criteria.getDateFrom());
-        assertEquals(dateTo, criteria.getDateTo());
+        assertFalse(criteria.validate(),
+                "Empty criteria should be invalid");
     }
 
     @Test
-    @DisplayName("Validate criteria with different field combinations")
-    void testValidate() {
-        assertFalse(criteria.validate());
-
+    void testValidate_WithKeywords() {
+        SearchCriteria criteria = new SearchCriteria();
         criteria.setKeywords("wallet");
-        assertTrue(criteria.validate());
 
-        criteria = new SearchCriteria();
+        assertTrue(criteria.validate(),
+                "Criteria with keywords should be valid");
+    }
+
+    @Test
+    void testValidate_WithCategory() {
+        SearchCriteria criteria = new SearchCriteria();
         criteria.setCategory("Electronics");
-        assertTrue(criteria.validate());
 
-        criteria = new SearchCriteria();
+        assertTrue(criteria.validate(),
+                "Criteria with category should be valid");
+    }
+
+    @Test
+    void testValidate_WithLocation() {
+        SearchCriteria criteria = new SearchCriteria();
         criteria.setLocation("Library");
-        assertTrue(criteria.validate());
 
-        criteria = new SearchCriteria();
+        assertTrue(criteria.validate(),
+                "Criteria with location should be valid");
+    }
+
+    @Test
+    void testValidate_WithType() {
+        SearchCriteria criteria = new SearchCriteria();
         criteria.setType(ItemType.LOST);
-        assertTrue(criteria.validate());
+
+        assertTrue(criteria.validate(),
+                "Criteria with type should be valid");
+    }
+
+    @Test
+    void testSettersAndGetters() {
+        SearchCriteria criteria = new SearchCriteria();
+        LocalDateTime now = LocalDateTime.now();
+
+        criteria.setKeywords("phone");
+        criteria.setCategory("Electronics");
+        criteria.setLocation("Cafeteria");
+        criteria.setType(ItemType.FOUND);
+        criteria.setDateFrom(now.minusDays(7));
+        criteria.setDateTo(now);
+
+        assertEquals("phone", criteria.getKeywords());
+        assertEquals("Electronics", criteria.getCategory());
+        assertEquals("Cafeteria", criteria.getLocation());
+        assertEquals(ItemType.FOUND, criteria.getType());
+        assertEquals(now.minusDays(7), criteria.getDateFrom());
+        assertEquals(now, criteria.getDateTo());
+    }
+
+    @Test
+    void testValidate_WithMultipleCriteria() {
+        SearchCriteria criteria = new SearchCriteria();
+        criteria.setKeywords("laptop");
+        criteria.setCategory("Electronics");
+        criteria.setLocation("Library");
+        criteria.setType(ItemType.LOST);
+
+        assertTrue(criteria.validate(),
+                "Criteria with multiple fields should be valid");
     }
 }
