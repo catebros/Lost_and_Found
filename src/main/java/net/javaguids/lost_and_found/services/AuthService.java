@@ -6,8 +6,7 @@ import net.javaguids.lost_and_found.model.enums.UserRole;
 import net.javaguids.lost_and_found.database.UserRepository;
 import net.javaguids.lost_and_found.utils.PasswordUtil;
 import net.javaguids.lost_and_found.utils.ValidationUtil;
-// TODO: Uncomment when ActivityLog is implemented
-// import net.javaguids.java_final_project.analytics.ActivityLog;
+import net.javaguids.lost_and_found.analytics.ActivityLog;
 import net.javaguids.lost_and_found.exceptions.AuthException;
 
 import java.util.UUID;
@@ -25,8 +24,7 @@ public class AuthService {
 
         if (user != null && PasswordUtil.verifyPassword(password, user.getPasswordHash())) {
             currentUser = user;
-            // TODO: Uncomment when ActivityLog is implemented
-            // ActivityLog.log(user.getUserId(), "LOGIN", "User logged in");
+            ActivityLog.log(user.getUserId(), "LOGIN", "User logged in");
             return user;
         }
 
@@ -70,17 +68,14 @@ public class AuthService {
             throw new AuthException("Failed to create user account");
         }
 
-        // TODO: Uncomment when ActivityLog is implemented
-        // ActivityLog.log(userId, "REGISTER", "New user registered: " + username);
-
+        ActivityLog.log(userId, "REGISTER", "New user registered: " + username);
         return newUser;
     }
 
     // Logs out the current user and clears the session
     public static void logout() {
         if (currentUser != null) {
-            // TODO: Uncomment when ActivityLog is implemented
-            // ActivityLog.log(currentUser.getUserId(), "LOGOUT", "User logged out");
+            ActivityLog.log(currentUser.getUserId(), "LOGOUT", "User logged out");
             currentUser = null;
         }
     }
