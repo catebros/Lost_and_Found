@@ -2,7 +2,7 @@ package net.javaguids.lost_and_found.analytics;
 
 import net.javaguids.lost_and_found.database.UserRepository;
 // TODO: Uncomment when MessageRepository is implemented (needed for saveActivityLog)
-// import net.javaguids.java_final_project.database.MessageRepository;
+// import net.javaguids.lost_and_found.database.MessageRepository;
 import net.javaguids.lost_and_found.model.users.User;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -10,22 +10,22 @@ import java.util.UUID;
 // Activity logging system for tracking user actions in the Lost and Found application.
 public class ActivityLog {
 
-    // Unique identifier for this log entry */
+    // Unique identifier for this log entry
     private String logId;
 
-    // ID of the user who performed the action */
+    // ID of the user who performed the action
     private String userId;
 
-    // Type of action performed (e.g., "LOGIN", "POST_ITEM", "UPDATE_ITEM") */
+    // Type of action performed (e.g., "LOGIN", "POST_ITEM", "UPDATE_ITEM")
     private String action;
 
-    // Detailed description of the action */
+    // Detailed description of the action
     private String details;
 
-    // Timestamp when the action occurred */
+    // Timestamp when the action occurred
     private LocalDateTime timestamp;
 
-    // Creates a new activity log entry.
+    // Creates a new activity log entry
     public ActivityLog(String logId, String userId, String action, String details) {
         this.logId = logId;
         this.userId = userId;
@@ -34,7 +34,7 @@ public class ActivityLog {
         this.timestamp = LocalDateTime.now();
     }
 
-    // Static method to log a user action. Automatically generates log ID, retrieves username, and saves to database.
+    // Static method to log a user action
     public static void log(String userId, String action, String details) {
         String logId = UUID.randomUUID().toString();
 
@@ -43,16 +43,11 @@ public class ActivityLog {
         User user = userRepo.getUserById(userId);
         String username = user != null ? user.getUsername() : "Unknown";
 
-        // Format details to include username for easier tracking
+        // Format details to include username
         String formattedDetails = "[" + username + "] " + details;
-
-        ActivityLog log = new ActivityLog(logId, userId, action, formattedDetails);
 
         // TODO: Uncomment when MessageRepository.saveActivityLog() is implemented
         // MessageRepository.getInstance().saveActivityLog(log);
-
-        // Temporary: Log to console until database persistence is available
-        System.out.println("ACTIVITY LOG: " + action + " - " + formattedDetails);
     }
 
     // Getters and Setters
