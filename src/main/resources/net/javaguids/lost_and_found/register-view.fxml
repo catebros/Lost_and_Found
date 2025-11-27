@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="net.javaguids.lost_and_found.controllers.RegisterController"
+      alignment="CENTER" prefHeight="850" prefWidth="800">
+<VBox alignment="TOP_LEFT" spacing="20" maxWidth="600">
+
+    <padding>
+        <Insets top="50" right="50" bottom="50" left="50"/>
+    </padding>
+
+    <Label text="Lost and Found System">
+        <font>
+            <Font size="24" name="System Bold"/>
+        </font>
+    </Label>
+
+    <Label text="Create New Account">
+        <font>
+            <Font size="18"/>
+        </font>
+    </Label>
+
+    <VBox spacing="10" alignment="TOP_LEFT">
+        <Label text="Username:" style="-fx-font-weight: bold;"/>
+        <TextField fx:id="usernameField" promptText="Enter username"/>
+
+        <Label text="Email:" style="-fx-font-weight: bold;"/>
+        <TextField fx:id="emailField" promptText="Enter email address"/>
+
+        <Label text="Password:" style="-fx-font-weight: bold;"/>
+        <PasswordField fx:id="passwordField" promptText="Enter password (min 8 characters)"/>
+
+        <Label text="Confirm Password:" style="-fx-font-weight: bold;"/>
+        <PasswordField fx:id="confirmPasswordField" promptText="Confirm password"/>
+    </VBox>
+
+    <Label text="Password must be at least 8 characters long" style="-fx-text-fill: gray; -fx-font-size: 11px;"/>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button text="Register" onAction="#handleRegister" prefWidth="140" styleClass="primary-button"/>
+        <Button text="Back to Login" onAction="#handleBackToLogin" prefWidth="140"/>
+    </HBox>
+
+</VBox>
+</HBox>
