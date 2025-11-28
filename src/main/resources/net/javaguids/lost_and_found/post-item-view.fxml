@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="net.javaguids.lost_and_found.controllers.PostItemController"
+      fitToWidth="true" fitToHeight="true"
+      prefHeight="850" prefWidth="800">
+<HBox alignment="CENTER">
+    <VBox spacing="15" maxWidth="600" alignment="TOP_LEFT">
+
+        <padding>
+            <Insets top="20" right="30" bottom="20" left="30"/>
+        </padding>
+
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Button text="←" onAction="#handleGoBack" prefWidth="40" prefHeight="40"
+                style="-fx-font-size: 18; -fx-padding: 5;"/>
+        <Label fx:id="titleLabel" text="Post New Item">
+            <font>
+                <Font size="20" name="System Bold"/>
+            </font>
+        </Label>
+    </HBox>
+
+    <Label text="Title:"/>
+    <TextField fx:id="titleField" promptText="Enter item title"/>
+
+    <Label text="Description:"/>
+    <TextArea fx:id="descriptionArea" promptText="Enter item description" prefHeight="100"/>
+
+    <Label text="Category:"/>
+    <ComboBox fx:id="categoryCombo" promptText="Select category" prefWidth="200"/>
+
+    <Label text="Location:"/>
+    <TextField fx:id="locationField" promptText="Enter location"/>
+
+    <Label text="Date:"/>
+    <DatePicker fx:id="datePicker" prefWidth="200"/>
+
+    <VBox fx:id="userSelectionBox" spacing="5" managed="false" visible="false">
+        <Label text="Assign to User (Admin):"/>
+        <ComboBox fx:id="userComboBox" promptText="Select user" prefWidth="200"/>
+    </VBox>
+
+    <VBox fx:id="statusSelectionBox" spacing="5" managed="false" visible="false">
+        <Label text="Item Status (Admin):"/>
+        <ComboBox fx:id="statusComboBox" promptText="Select status" prefWidth="200"/>
+    </VBox>
+
+    <Label text="Item Type:"/>
+    <HBox spacing="20">
+        <RadioButton fx:id="lostRadio" text="Lost" selected="true"/>
+        <RadioButton fx:id="foundRadio" text="Found"/>
+    </HBox>
+
+    <Label text="Reward (for lost items):"/>
+    <TextField fx:id="rewardField" promptText="Enter reward amount (optional)"/>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button text="Upload Image" onAction="#handleUploadImage"/>
+        <Label fx:id="imagePathLabel" text="No image selected"/>
+        <Button fx:id="removeImageButton" text="Remove Image" onAction="#handleRemoveImage" visible="false" style="-fx-text-fill: #f44336;"/>
+    </HBox>
+
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Button text="Submit" onAction="#handleSubmit" prefWidth="100" styleClass="primary-button"/>
+        </HBox>
+
+    </VBox>
+</HBox>
+</ScrollPane>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="net.javaguids.lost_and_found.controllers.SearchController"
+      spacing="15" prefHeight="850" prefWidth="1200">
+
+    <padding>
+        <Insets top="20" right="30" bottom="20" left="30"/>
+    </padding>
+
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Button text="←" onAction="#handleGoBack" prefWidth="40" prefHeight="40"
+                style="-fx-font-size: 18; -fx-padding: 5;"/>
+        <Label text="Search Items">
+            <font>
+                <Font size="20" name="System Bold"/>
+            </font>
+        </Label>
+    </HBox>
+
+    <GridPane hgap="10" vgap="10">
+        <Label text="Keywords:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="keywordsField" promptText="Enter keywords" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="200"/>
+
+        <Label text="Category:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <ComboBox fx:id="categoryCombo" GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="200"/>
+
+        <Label text="Location:" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+        <TextField fx:id="locationField" promptText="Enter location" GridPane.columnIndex="3" GridPane.rowIndex="0" prefWidth="200"/>
+
+        <Label text="Type:" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+        <ComboBox fx:id="typeCombo" GridPane.columnIndex="3" GridPane.rowIndex="1" prefWidth="200"/>
+    </GridPane>
+
+    <Button text="Search" onAction="#handleSearch" prefWidth="100"/>
+
+    <Label text="Search Results:">
+        <font>
+            <Font size="16" name="System Bold"/>
+        </font>
+    </Label>
+
+    <TableView fx:id="resultsTable" prefHeight="350" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="titleColumn" text="Title" prefWidth="200"/>
+            <TableColumn fx:id="categoryColumn" text="Category" prefWidth="120"/>
+            <TableColumn fx:id="locationColumn" text="Location" prefWidth="150"/>
+            <TableColumn fx:id="typeColumn" text="Type" prefWidth="80"/>
+        </columns>
+    </TableView>
+
+    <Label text="Double-click on an item to view details" style="-fx-text-fill: gray;"/>
+
+</VBox>
