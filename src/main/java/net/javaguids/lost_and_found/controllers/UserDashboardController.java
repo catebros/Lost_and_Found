@@ -14,8 +14,8 @@ import net.javaguids.lost_and_found.services.AuthService;
 import net.javaguids.lost_and_found.services.ItemService; 
 import net.javaguids.lost_and_found.utils.NavigationManager;
 import net.javaguids.lost_and_found.utils.AlertUtil;
-//import net.javaguids.lost_and_found.context.EditItemContext; TODO: Implement ClaimItemContext class
-//import net.javaguids.lost_and_found.context.ClaimItemContext; TODO: Implement NavigationContext class
+import net.javaguids.lost_and_found.context.EditItemContext; 
+//import net.javaguids.lost_and_found.context.ClaimItemContext; TODO: Implement ClaimItemContext class
 import net.javaguids.lost_and_found.context.NavigationContext;
 
 import java.util.List;
@@ -155,9 +155,9 @@ public class UserDashboardController {
 
     // Sets up edit context and navigates to the post item view for editing.
     private void handleEditItem(Item item) {
-        // EditItemContext.setItem(item);
-        // NavigationContext.setPreviousPage("user-dashboard-view.fxml", "Lost and Found - Dashboard");
-        // NavigationManager.navigateTo("post-item-view.fxml", "Edit Item");
+        EditItemContext.setItem(item);
+        NavigationContext.setPreviousPage("user-dashboard-view.fxml", "Lost and Found - Dashboard");
+        NavigationManager.navigateTo("post-item-view.fxml", "Edit Item");
     }
 
     // Sets up claim context and navigates to the claim item view.
