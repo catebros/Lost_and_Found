@@ -8,10 +8,6 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Test class for Message.
- * Tests message creation, field access, and timestamp handling.
- */
 @DisplayName("Message Tests")
 class MessageTest {
 

@@ -9,13 +9,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Test class for MessageRepository.
- * Tests all CRUD operations and the Singleton pattern implementation.
- * 
- * Note: These tests use the actual database, so test data may persist.
- * Consider cleaning up test data after tests if needed.
- */
+// Tests for MessageRepository - uses actual DB so test data may stick around
 @DisplayName("MessageRepository Tests")
 class MessageRepositoryTest {
 
@@ -28,7 +22,7 @@ class MessageRepositoryTest {
     @BeforeEach
     void setUp() {
         repository = MessageRepository.getInstance();
-        // Generate unique test identifiers to avoid conflicts
+        // Use random IDs to avoid conflicts
         testMessageId = "msg-test-" + UUID.randomUUID().toString().substring(0, 8);
         testSenderId = "sender-" + UUID.randomUUID().toString().substring(0, 8);
         testReceiverId = "receiver-" + UUID.randomUUID().toString().substring(0, 8);
@@ -37,7 +31,7 @@ class MessageRepositoryTest {
 
     @AfterEach
     void tearDown() {
-        // Clean up test data after each test
+        // Clean up test data
         if (testMessageId != null) {
             repository.deleteMessage(testMessageId);
         }
@@ -71,7 +65,7 @@ class MessageRepositoryTest {
         // Assert
         assertTrue(result, "saveMessage should return true on success");
         
-        // Verify message was saved by retrieving it
+        // Check it was actually saved
         List<Message> messages = repository.getMessagesByUser(testSenderId);
         assertFalse(messages.isEmpty(), "Saved message should be retrievable");
         Message savedMessage = messages.stream()
@@ -99,7 +93,6 @@ class MessageRepositoryTest {
         assertNotNull(messages, "Messages list should not be null");
         assertTrue(messages.size() >= 2, "Should retrieve at least 2 messages");
         
-        // Clean up
         repository.deleteMessage(message2.getMessageId());
     }
 
@@ -145,7 +138,7 @@ class MessageRepositoryTest {
         // Assert
         assertTrue(result, "deleteMessage should return true on success");
         
-        // Verify message was deleted
+        // Make sure it's actually gone
         List<Message> messages = repository.getMessagesByUser(testSenderId);
         boolean messageExists = messages.stream()
             .anyMatch(m -> m.getMessageId().equals(testMessageId));
@@ -181,7 +174,6 @@ class MessageRepositoryTest {
         assertTrue(users.contains(testReceiverId), "Should include receiver ID");
         assertTrue(users.contains(otherUserId), "Should include other user ID");
         
-        // Clean up
         repository.deleteMessage(message2.getMessageId());
     }
 
@@ -200,7 +192,6 @@ class MessageRepositoryTest {
         // Assert
         assertFalse(users.contains(systemId), "Should exclude SYSTEM from conversation partners");
         
-        // Clean up
         repository.deleteMessage(systemMessage.getMessageId());
     }
 
@@ -234,7 +225,7 @@ class MessageRepositoryTest {
 
         // Assert
         assertNotNull(logs, "Logs list should not be null");
-        // Note: May be empty if database doesn't have logs in the time range
+        // Might be empty if no logs in that time range
     }
 
     @Test

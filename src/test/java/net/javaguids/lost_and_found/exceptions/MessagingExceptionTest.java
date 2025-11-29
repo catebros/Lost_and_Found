@@ -5,10 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Test class for MessagingException.
- * Tests exception creation, message handling, and inheritance from LostAndFoundException.
- */
 @DisplayName("MessagingException Tests")
 class MessagingExceptionTest {
 
