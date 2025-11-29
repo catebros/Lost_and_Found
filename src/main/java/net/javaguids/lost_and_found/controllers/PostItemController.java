@@ -10,7 +10,7 @@ import net.javaguids.lost_and_found.model.items.Item;
 import net.javaguids.lost_and_found.model.items.LostItem;
 import net.javaguids.lost_and_found.services.AuthService;
 import net.javaguids.lost_and_found.services.ItemService;
-// import net.javaguids.lost_and_found.utils.FileHandler; TODO: Implement FileHandler util for image management operations (method: saveImage(File, String))
+import net.javaguids.lost_and_found.utils.FileHandler;
 import net.javaguids.lost_and_found.utils.NavigationManager;
 import net.javaguids.lost_and_found.utils.AlertUtil;
 import net.javaguids.lost_and_found.context.EditItemContext;
@@ -563,21 +563,20 @@ public class PostItemController {
         // Process selected file
         if (file != null) {
             String itemId = UUID.randomUUID().toString();
-            //TODO: Uncomment when FileHandler is implemented
-            //imagePath = FileHandler.saveImage(file, itemId);
-            //if (imagePath != null) {
-            //    imagePathLabel.setText("Image: " + file.getName());
-            //    removeImageButton.setVisible(true);
+            imagePath = FileHandler.saveImage(file, itemId);
+            if (imagePath != null) {
+                imagePathLabel.setText("Image: " + file.getName());
+                removeImageButton.setVisible(true);
             }
         }
     }
 
     // Image removal functionality: clears the selected image and updates UI
-    //@FXML
-   //public void handleRemoveImage() {
-        //imagePath = null;
-        //imagePathLabel.setText("No image selected");
-        //removeImageButton.setVisible(false);
-    //}
-//}
+   @FXML
+   public void handleRemoveImage() {
+        imagePath = null;
+        imagePathLabel.setText("No image selected");
+        removeImageButton.setVisible(false);
+    }
+}
 
