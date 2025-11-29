@@ -13,10 +13,10 @@ import java.util.List;
 // Utility class for file operations including CSV export and image handling.
 public class FileHandler {
 
-    // Directory path for storing uploaded images */
+    // Directory path for storing uploaded images
     private static final String IMAGE_DIRECTORY = "uploads/images/";
 
-    // Date formatter for CSV timestamp exports */
+    // Date formatter for CSV timestamp exports
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     // Exports a list of activity logs to a CSV file. Creates a CSV with columns: LogID, UserID, Action, Details, Timestamp.
@@ -46,6 +46,11 @@ public class FileHandler {
 
     // Saves an uploaded image file to the application's image directory. Generates a unique filename using itemId and timestamp. Creates the upload directory if it doesn't exist.
     public static String saveImage(File sourceFile, String itemId) {
+        // Validate input
+        if (sourceFile == null) {
+            return null;
+        }
+
         try {
             // Create upload directory if it doesn't exist
             Path uploadDir = Paths.get(IMAGE_DIRECTORY);
