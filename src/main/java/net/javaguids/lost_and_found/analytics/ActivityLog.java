@@ -1,8 +1,7 @@
 package net.javaguids.lost_and_found.analytics;
 
 import net.javaguids.lost_and_found.database.UserRepository;
-// TODO: Uncomment when MessageRepository is implemented (needed for saveActivityLog)
-// import net.javaguids.lost_and_found.database.MessageRepository;
+import net.javaguids.lost_and_found.database.MessageRepository;
 import net.javaguids.lost_and_found.model.users.User;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -46,8 +45,9 @@ public class ActivityLog {
         // Format details to include username
         String formattedDetails = "[" + username + "] " + details;
 
-        // TODO: Uncomment when MessageRepository.saveActivityLog() is implemented
-        // MessageRepository.getInstance().saveActivityLog(log);
+        // Create and save the activity log
+        ActivityLog log = new ActivityLog(logId, userId, action, formattedDetails);
+        MessageRepository.getInstance().saveActivityLog(log);
     }
 
     // Getters and Setters
