@@ -13,36 +13,16 @@ import java.util.List;
 // import java.util.HashMap;
 // import java.util.Map;
 
-/**
- * MessageRepository handles all database operations related to messages and activity logs.
- * This class implements the Singleton pattern to ensure only one instance exists.
- * 
- * Responsibilities:
- * - Saving and retrieving messages between users
- * - Managing activity logs for user actions
- * - Providing conversation history retrieval
- * - TODO: Generate statistics (requires Statistics class implementation)
- */
+// Handles database operations for messages and activity logs
+// Uses singleton pattern to keep one instance
 public class MessageRepository {
-    // Singleton instance of MessageRepository
     private static MessageRepository instance;
-    // Database connection obtained from DatabaseManager
     private final Connection connection;
 
-    /**
-     * Private constructor to prevent external instantiation (Singleton pattern).
-     * Initializes the database connection through DatabaseManager.
-     */
     private MessageRepository() {
         this.connection = DatabaseManager.getInstance().getConnection();
     }
 
-    /**
-     * Returns the singleton instance of MessageRepository.
-     * Creates a new instance if one doesn't exist.
-     * 
-     * @return The singleton MessageRepository instance
-     */
     public static MessageRepository getInstance() {
         if (instance == null) {
             instance = new MessageRepository();
@@ -50,13 +30,7 @@ public class MessageRepository {
         return instance;
     }
 
-    /**
-     * Saves a message to the database.
-     * Uses INSERT OR REPLACE to handle both new messages and updates.
-     * 
-     * @param message The message object to save
-     * @return true if the message was saved successfully, false otherwise
-     */
+    // Saves a message to the database (INSERT OR REPLACE handles both new and updates)
     public boolean saveMessage(Message message) {
         String query = "INSERT OR REPLACE INTO messages (message_id, sender_id, receiver_id, content, timestamp) " +
                       "VALUES (?, ?, ?, ?, ?)";
@@ -75,13 +49,7 @@ public class MessageRepository {
         }
     }
 
-    /**
-     * Retrieves all messages for a specific user (both sent and received).
-     * Messages are ordered by timestamp in descending order (newest first).
-     * 
-     * @param userId The ID of the user whose messages to retrieve
-     * @return A list of messages associated with the user
-     */
+    // Gets all messages for a user (sent and received), newest first
     public List<Message> getMessagesByUser(String userId) {
         List<Message> messages = new ArrayList<>();
         String query = "SELECT * FROM messages WHERE (sender_id = ? OR receiver_id = ?) ORDER BY timestamp DESC";
@@ -97,7 +65,7 @@ public class MessageRepository {
                 String timestampStr = rs.getString("timestamp");
 
                 Message message = new Message(messageId, senderId, receiverId, content);
-                // Set the original timestamp from database (preserves actual send time)
+                // Restore original timestamp from DB
                 if (timestampStr != null) {
                     message.setTimestamp(java.time.LocalDateTime.parse(timestampStr));
                 }
@@ -109,13 +77,7 @@ public class MessageRepository {
         return messages;
     }
 
-    /**
-     * Retrieves all messages from the database.
-     * Useful for administrative purposes or system-wide message retrieval.
-     * Messages are ordered by timestamp in descending order (newest first).
-     * 
-     * @return A list of all messages in the database
-     */
+    // Gets all messages in the database (for admin use), newest first
     public List<Message> getAllMessages() {
         List<Message> messages = new ArrayList<>();
         String query = "SELECT * FROM messages ORDER BY timestamp DESC";
@@ -129,7 +91,7 @@ public class MessageRepository {
                 String timestampStr = rs.getString("timestamp");
 
                 Message message = new Message(messageId, senderId, receiverId, content);
-                // Set the original timestamp from database (preserves actual send time)
+                // Restore original timestamp from DB
                 if (timestampStr != null) {
                     message.setTimestamp(java.time.LocalDateTime.parse(timestampStr));
                 }
@@ -141,12 +103,7 @@ public class MessageRepository {
         return messages;
     }
 
-    /**
-     * Deletes a message from the database by its message ID.
-     * 
-     * @param messageId The unique identifier of the message to delete
-     * @return true if the message was deleted successfully, false otherwise
-     */
+    // Deletes a message by ID
     public boolean deleteMessage(String messageId) {
         String query = "DELETE FROM messages WHERE message_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -159,13 +116,7 @@ public class MessageRepository {
         }
     }
 
-    /**
-     * Retrieves a list of user IDs that the specified user has had conversations with.
-     * Excludes system messages and returns distinct user IDs.
-     * 
-     * @param userId The ID of the user whose conversation partners to find
-     * @return A list of user IDs that have exchanged messages with the specified user
-     */
+    // Gets list of user IDs that this user has messaged with (excludes SYSTEM)
     public List<String> getUsersFromConversations(String userId) {
         List<String> users = new ArrayList<>();
         String query = "SELECT DISTINCT CASE " +
@@ -194,13 +145,7 @@ public class MessageRepository {
         return users;
     }
 
-    /**
-     * Saves an activity log entry to the database.
-     * Activity logs track user actions for auditing and analytics purposes.
-     * 
-     * @param log The ActivityLog object to save
-     * @return true if the log was saved successfully, false otherwise
-     */
+    // Saves an activity log to the database
     public boolean saveActivityLog(ActivityLog log) {
         String query = "INSERT INTO activity_logs (log_id, user_id, action, details, timestamp) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -218,14 +163,7 @@ public class MessageRepository {
         }
     }
 
-    /**
-     * Retrieves activity logs within a specified time range.
-     * Useful for generating reports and analyzing user behavior over time.
-     * 
-     * @param from The start of the time range (inclusive)
-     * @param to The end of the time range (inclusive)
-     * @return A list of ActivityLog entries within the specified time range
-     */
+    // Gets activity logs within a time range
     public List<ActivityLog> getActivityLogs(LocalDateTime from, LocalDateTime to) {
         List<ActivityLog> logs = new ArrayList<>();
         String query = "SELECT * FROM activity_logs WHERE timestamp BETWEEN ? AND ? ORDER BY timestamp DESC";
@@ -249,12 +187,7 @@ public class MessageRepository {
         return logs;
     }
 
-    /**
-     * Generates statistics about the application.
-     * TODO: Implement Statistics class in analytics package to enable this functionality
-     * 
-     * @return Statistics object containing application metrics
-     */
+    // TODO: Need to implement Statistics class first
     public Object generateStatistics() {
         // TODO: Implement Statistics class in analytics package
         // Statistics stats = new Statistics();
