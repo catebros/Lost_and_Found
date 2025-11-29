@@ -20,7 +20,6 @@ public class FileHandler {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
     // Exports a list of activity logs to a CSV file. Creates a CSV with columns: LogID, UserID, Action, Details, Timestamp.
-
     public static boolean exportLogsToCSV(List<ActivityLog> logs, String filePath) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             // Write CSV header
