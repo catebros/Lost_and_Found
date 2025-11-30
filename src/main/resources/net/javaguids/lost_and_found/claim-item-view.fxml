@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="net.javaguids.java_final_project.controllers.ClaimItemController"
+            prefHeight="850" prefWidth="800">
+
+    <top>
+        <VBox spacing="10" style="-fx-background-color: #2196F3; -fx-padding: 20;">
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <Button text="←" onAction="#handleGoBack" prefWidth="40" prefHeight="40"
+                        style="-fx-font-size: 18; -fx-padding: 5; -fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white;"/>
+                <Label text="Claim Item" textFill="white">
+                    <font>
+                        <Font size="20" name="System Bold"/>
+                    </font>
+                </Label>
+            </HBox>
+            <Label text="Select the user that helped you and their matching item (if any)" textFill="white" style="-fx-font-size: 12;">
+                <font>
+                    <Font size="12"/>
+                </font>
+            </Label>
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="20" style="-fx-padding: 30;">
+            <VBox spacing="8">
+                <Label text="Select User:" style="-fx-font-weight: bold; -fx-font-size: 14;">
+                    <font>
+                        <Font size="14" name="System Bold"/>
+                    </font>
+                </Label>
+                <ComboBox fx:id="usersComboBox" prefWidth="400"/>
+                <Label text="Choose the user you had a conversation with">
+                    <font>
+                        <Font size="11"/>
+                    </font>
+                    <style>-fx-text-fill: #666;</style>
+                </Label>
+            </VBox>
+
+            <VBox spacing="8">
+                <Label text="Select Matching Item:" style="-fx-font-weight: bold; -fx-font-size: 14;">
+                    <font>
+                        <Font size="14" name="System Bold"/>
+                    </font>
+                </Label>
+                <ComboBox fx:id="itemsComboBox" prefWidth="400"/>
+                <Label text="Choose a matching item from the user's posts, or select 'No published item'">
+                    <font>
+                        <Font size="11"/>
+                    </font>
+                    <style>-fx-text-fill: #666;</style>
+                </Label>
+            </VBox>
+
+            <Label fx:id="selectedItemLabel" text="Selected: " style="-fx-font-size: 13; -fx-text-fill: #2196F3; -fx-font-weight: bold;"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <Button text="Claim Item" onAction="#handleClaim" prefWidth="120" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            </HBox>
+        </VBox>
+    </center>
+
+</BorderPane>

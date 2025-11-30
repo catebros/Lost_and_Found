@@ -2,16 +2,14 @@ package net.javaguids.lost_and_found.database;
 
 import net.javaguids.lost_and_found.messaging.Message;
 import net.javaguids.lost_and_found.analytics.ActivityLog;
-// TODO: Implement Statistics class in analytics package
-// import net.javaguids.lost_and_found.analytics.Statistics;
+import net.javaguids.lost_and_found.analytics.Statistics;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-// TODO: Uncomment when Statistics class is implemented
-// import java.util.HashMap;
-// import java.util.Map;
+import java.util.HashMap;
+import java.util.Map;
 
 // Handles database operations for messages and activity logs
 // Uses singleton pattern to keep one instance
@@ -189,7 +187,6 @@ public class MessageRepository {
 
     // TODO: Need to implement Statistics class first
     public Object generateStatistics() {
-        // TODO: Implement Statistics class in analytics package
         // Statistics stats = new Statistics();
         //
         // try (Statement stmt = connection.createStatement()) {

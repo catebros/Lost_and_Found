@@ -9,7 +9,7 @@ import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import net.javaguids.lost_and_found.analytics.ActivityLog;
-// import net.javaguids.lost_and_found.analytics.Statistics; TODO:
+import net.javaguids.lost_and_found.analytics.Statistics; 
 import net.javaguids.lost_and_found.database.UserRepository;
 import net.javaguids.lost_and_found.database.ItemRepository;
 import net.javaguids.lost_and_found.database.MessageRepository;
@@ -296,9 +296,8 @@ public class AdminDashboardController {
     // Handles viewing statistics 
     @FXML
     public void handleViewStatistics() {
-        // TODO: uncomment when Statistics are implemented
-    //    Statistics stats = messageRepository.generateStatistics();
-    //    AlertUtil.showAlert("Statistics", stats.generateReport(), Alert.AlertType.INFORMATION);
+        //Statistics stats = messageRepository.generateStatistics();
+        //AlertUtil.showAlert("Statistics", stats.generateReport(), Alert.AlertType.INFORMATION);
     }
 
     // Handles going back to the previous view using NavigationManager
@@ -390,7 +389,7 @@ public class AdminDashboardController {
 
     // load statistics such as total users and total items
     private void loadStatistics() {
-        // TODO: uncomment when statistics are implemented
+        //TODO: FIX
         //Statistics stats = messageRepository.generateStatistics();
         //totalUsersLabel.setText("Total Users: " + stats.getTotalUsers());
         //totalItemsLabel.setText("Total Items: " + stats.getTotalItems());
