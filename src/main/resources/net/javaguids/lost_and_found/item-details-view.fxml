@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<ScrollPane xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="net.javaguids.java_final_project.controllers.ItemDetailsController"
+      fitToWidth="true" fitToHeight="true"
+      prefHeight="850" prefWidth="800">
+<HBox alignment="CENTER">
+    <VBox spacing="15" maxWidth="600" alignment="TOP_LEFT">
+
+        <padding>
+            <Insets top="20" right="30" bottom="20" left="30"/>
+        </padding>
+
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <Button text="←" onAction="#handleGoBack" prefWidth="40" prefHeight="40"
+                style="-fx-font-size: 18; -fx-padding: 5;"/>
+        <Label text="Item Details">
+            <font>
+                <Font size="20" name="System Bold"/>
+            </font>
+        </Label>
+    </HBox>
+
+    <ImageView fx:id="imageView" fitHeight="200" fitWidth="300" preserveRatio="true"/>
+
+    <Label fx:id="titleLabel" text="Item Title">
+        <font>
+            <Font size="18" name="System Bold"/>
+        </font>
+    </Label>
+
+    <Label text="Description:">
+        <font>
+            <Font size="14" name="System Bold"/>
+        </font>
+    </Label>
+    <TextArea fx:id="descriptionArea" editable="false" prefHeight="100" wrapText="true"/>
+
+    <Label fx:id="categoryLabel" text="Category: "/>
+    <Label fx:id="locationLabel" text="Location: "/>
+    <Label fx:id="typeLabel" text="Type: "/>
+    <Label fx:id="dateLabel" text="Date: "/>
+    <Label fx:id="rewardLabel" text="Reward: " visible="false"/>
+    <Label fx:id="postedByLabel" text="Posted by: "/>
+
+    <Separator/>
+    <Label text="Interested in this item? Send a message to discuss!" style="-fx-font-size: 12px; -fx-font-style: italic;"/>
+
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Button text="Send Message" onAction="#handleSendMessage" prefWidth="180"
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        </HBox>
+
+    </VBox>
+</HBox>
+</ScrollPane>
