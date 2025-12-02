@@ -6,29 +6,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-
-/**
- * Repository responsible for persisting and retrieving {@link Item} entities.
- * <p>
- * Implements the Singleton pattern to ensure a single instance interacts with
- * the underlying SQLite database managed by {@link DatabaseManager}.
- * </p>
- */
+// Handles saving and loading items from the database
+// Uses singleton pattern to keep one instance
 public class ItemRepository {
-    /** Singleton instance. */
     private static ItemRepository instance;
-    /** Shared database connection. */
     private final Connection connection;
 
     private ItemRepository() {
         this.connection = net.javaguids.lost_and_found.database.DatabaseManager.getInstance().getConnection();
     }
 
-    /**
-     * Returns the shared {@link ItemRepository} instance.
-     *
-     * @return singleton instance
-     */
     public static ItemRepository getInstance() {
         if (instance == null) {
             instance = new ItemRepository();
@@ -36,12 +23,7 @@ public class ItemRepository {
         return instance;
     }
 
-    /**
-     * Retrieves an item by its identifier.
-     *
-     * @param itemId item identifier
-     * @return matching {@link Item} or {@code null} if not found
-     */
+    // Gets an item by ID, returns null if not found
     public Item getItemById(String itemId) {
         String query = "SELECT * FROM items WHERE item_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -56,12 +38,7 @@ public class ItemRepository {
         return null;
     }
 
-    /**
-     * Persists a new item in the database.
-     *
-     * @param item domain item to persist
-     * @return {@code true} when the insert succeeds
-     */
+    // Saves a new item to the database
     public boolean saveItem(Item item) {
         String query = "INSERT INTO items (item_id, title, description, category, location, date_posted, status, " +
                       "posted_by_user_id, image_path, type, date_lost_found, reward) " +
@@ -99,12 +76,7 @@ public class ItemRepository {
         }
     }
 
-    /**
-     * Updates an existing item with new information.
-     *
-     * @param item domain item containing latest information
-     * @return {@code true} when the update succeeds
-     */
+    // Updates an existing item
     public boolean updateItem(Item item) {
         String query = "UPDATE items SET title = ?, description = ?, category = ?, location = ?, " +
                       "status = ?, image_path = ?, date_lost_found = ?, reward = ? WHERE item_id = ?";
@@ -138,12 +110,7 @@ public class ItemRepository {
         }
     }
 
-    /**
-     * Removes an item from the database.
-     *
-     * @param itemId identifier of the item to delete
-     * @return {@code true} when the delete succeeds
-     */
+    // Deletes an item by ID
     public boolean deleteItem(String itemId) {
         String query = "DELETE FROM items WHERE item_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -156,12 +123,7 @@ public class ItemRepository {
         }
     }
 
-    /**
-     * Searches items using high-level {@link SearchCriteria}.
-     *
-     * @param criteria optional filters (keyword, location, status, type)
-     * @return list of matching items
-     */
+    // Searches items using the given criteria (keyword, location, status, type)
     public List<Item> searchItems(SearchCriteria criteria) {
         List<Item> items = new ArrayList<>();
         String query = "SELECT * FROM items";
@@ -180,12 +142,7 @@ public class ItemRepository {
         return items;
     }
 
-    /**
-     * Retrieves every item posted by a specific user.
-     *
-     * @param userId identifier of the author
-     * @return list of their items
-     */
+    // Gets all items posted by a specific user
     public List<Item> getItemsByUser(String userId) {
         List<Item> items = new ArrayList<>();
         String query = "SELECT * FROM items WHERE posted_by_user_id = ?";
@@ -201,10 +158,7 @@ public class ItemRepository {
         return items;
     }
 
-    /**
-     * Maps the current {@link ResultSet} row into a concrete {@link Item}
-     * implementation (LostItem / FoundItem).
-     */
+    // Converts a database row into a LostItem or FoundItem
     private Item extractItemFromResultSet(ResultSet rs) throws SQLException {
         String itemId = rs.getString("item_id");
         String title = rs.getString("title");
@@ -229,26 +183,20 @@ public class ItemRepository {
         item.setImagePath(rs.getString("image_path"));
         return item;
     }
-    /**
-     * Represents the allowed status values for repository items.
-     */
+    // Possible statuses for items
     public enum ItemStatus {
         ACTIVE,
         CLAIMED,
         RESOLVED
     }
 
-    /**
-     * Categorization for lost vs. found items.
-     */
+    // Item type - either lost or found
     public enum ItemType {
         LOST,
         FOUND
     }
 
-    /**
-     * Immutable search criteria with builder-style construction.
-     */
+    // Search criteria for filtering items (uses builder pattern)
     public static class SearchCriteria {
         private final String keyword;
         private final String location;
@@ -278,9 +226,7 @@ public class ItemRepository {
             return type;
         }
 
-        /**
-         * Builder for {@link SearchCriteria}.
-         */
+        // Builder for creating SearchCriteria
         public static class Builder {
             private String keyword;
             private String location;
@@ -313,16 +259,12 @@ public class ItemRepository {
         }
     }
 
-    /**
-     * Contract describing an object that can be matched against {@link SearchCriteria}.
-     */
+    // Interface for things that can be matched against search criteria
     public interface Searchable {
         boolean matches(SearchCriteria criteria);
     }
 
-    /**
-     * Base class for all item variants persisted by the repository.
-     */
+    // Base class for LostItem and FoundItem
     public static abstract class Item implements Searchable {
         private final String itemId;
         private final String title;
@@ -418,9 +360,7 @@ public class ItemRepository {
         }
     }
 
-    /**
-     * Represents an item reported as lost by a user.
-     */
+    // Item that someone lost
     public static final class LostItem extends Item {
         private final LocalDateTime dateLost;
         private final double reward;
@@ -447,9 +387,7 @@ public class ItemRepository {
         }
     }
 
-    /**
-     * Represents an item that someone has found.
-     */
+    // Item that someone found
     public static final class FoundItem extends Item {
         private final LocalDateTime dateFound;
 

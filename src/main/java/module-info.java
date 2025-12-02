@@ -13,6 +13,9 @@ module net.javaguids.lost_and_found {
     requires com.almasb.fxgl.all;
 
     opens net.javaguids.lost_and_found to javafx.fxml;
+    opens net.javaguids.lost_and_found.controllers to javafx.fxml;
+    opens net.javaguids.lost_and_found.utils to javafx.fxml;
+    opens net.javaguids.lost_and_found.services to javafx.fxml;
     opens net.javaguids.lost_and_found.model.users to org.junit.platform.commons;
     opens net.javaguids.lost_and_found.model.enums to org.junit.platform.commons;
     opens net.javaguids.lost_and_found.database to org.junit.platform.commons;
