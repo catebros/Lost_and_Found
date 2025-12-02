@@ -8,7 +8,7 @@
 
 <ScrollPane xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="net.javaguids.java_final_project.controllers.ItemDetailsController"
+      fx:controller="net.javaguids.lost_and_found.controllers.ItemDetailsController"
       fitToWidth="true" fitToHeight="true"
       prefHeight="850" prefWidth="800">
 <HBox alignment="CENTER">

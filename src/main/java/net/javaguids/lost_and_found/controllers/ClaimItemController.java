@@ -191,7 +191,7 @@ public class ClaimItemController {
         }
 
         try {
-            //TODO:FIX
+
             // Mark current item as resolved
             currentItem.setStatus(net.javaguids.lost_and_found.model.enums.ItemStatus.RESOLVED);
             boolean itemUpdated = itemRepository.updateItem(currentItem);
@@ -205,7 +205,6 @@ public class ClaimItemController {
             if (selectedItemWrapper.getItem() != null) {
                 Item matchingItem = selectedItemWrapper.getItem();
                 matchingItem.setStatus(net.javaguids.lost_and_found.model.enums.ItemStatus.RESOLVED);
-                //TODO: FIX
                 boolean matchingItemUpdated = itemRepository.updateItem(matchingItem);
 
                 if (!matchingItemUpdated) {

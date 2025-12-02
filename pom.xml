@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>net.javaguids</groupId>
-    <artifactId>Java_Final_Project</artifactId>
+    <artifactId>Lost_and_Found</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>Java_Final_Project</name>
+    <name>Lost_and_Found</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -173,7 +173,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>net.javaguids.java_final_project/net.javaguids.java_final_project.Launcher</mainClass>
+                    <mainClass>net.javaguids.lost_and_found/net.javaguids.lost_and_found.Launcher</mainClass>
                     <executable>${java.home}/bin/java</executable>
                 </configuration>
             </plugin>

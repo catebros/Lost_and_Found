@@ -7,7 +7,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="net.javaguids.java_final_project.controllers.ClaimItemController"
+            fx:controller="net.javaguids.lost_and_found.controllers.ClaimItemController"
             prefHeight="850" prefWidth="800">
 
     <top>
