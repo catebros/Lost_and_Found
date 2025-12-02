@@ -8,6 +8,7 @@ import net.javaguids.lost_and_found.analytics.ActivityLog;
 
 import java.util.List;
 
+// Service class for managing lost and found items. Handles item posting, searching, updating, and deletion operations.
 public class ItemService {
     private ItemRepository itemRepository;
 
@@ -15,6 +16,7 @@ public class ItemService {
         this.itemRepository = ItemRepository.getInstance();
     }
 
+    // Posts a new item to the system after validation.
     public boolean postItem(Item item) {
         if (!ValidationUtil.isValidItem(item)) {
             return false;
@@ -27,10 +29,12 @@ public class ItemService {
         return success;
     }
 
+    // Searches for items based on the provided criteria.
     public List<Item> searchItems(SearchCriteria criteria) {
         return itemRepository.searchItems(criteria);
     }
 
+    // Searches for items excluding those posted by a specific user and resolved items.
     public List<Item> searchItemsExcludingUser(SearchCriteria criteria, String userId) {
         List<Item> allItems = itemRepository.searchItems(criteria);
         List<Item> filteredItems = new java.util.ArrayList<>();
@@ -54,14 +58,17 @@ public class ItemService {
         return filteredItems;
     }
 
+    // Retrieves a specific item by its unique identifier.
     public Item getItemById(String itemId) {
         return itemRepository.getItemById(itemId);
     }
 
+    // Gets all items posted by a specific user.
     public List<Item> getItemsByUser(String userId) {
         return itemRepository.getItemsByUser(userId);
     }
 
+    // Updates an existing item's information.
     public boolean updateItem(Item item) {
         boolean success = itemRepository.updateItem(item);
         if (success) {
@@ -70,6 +77,7 @@ public class ItemService {
         return success;
     }
 
+    // Deletes an item from the system and logs the action.
     public boolean deleteItem(String itemId) {
         Item item = itemRepository.getItemById(itemId);
         boolean success = itemRepository.deleteItem(itemId);
