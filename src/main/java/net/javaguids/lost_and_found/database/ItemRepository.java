@@ -1,5 +1,11 @@
 package net.javaguids.lost_and_found.database;
 
+import net.javaguids.lost_and_found.model.items.Item;
+import net.javaguids.lost_and_found.model.items.LostItem;
+import net.javaguids.lost_and_found.model.items.FoundItem;
+import net.javaguids.lost_and_found.model.enums.ItemStatus;
+import net.javaguids.lost_and_found.search.SearchCriteria;
+
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,7 +19,7 @@ public class ItemRepository {
     private final Connection connection;
 
     private ItemRepository() {
-        this.connection = net.javaguids.lost_and_found.database.DatabaseManager.getInstance().getConnection();
+        this.connection = DatabaseManager.getInstance().getConnection();
     }
 
     public static ItemRepository getInstance() {
@@ -41,8 +47,8 @@ public class ItemRepository {
     // Saves a new item to the database
     public boolean saveItem(Item item) {
         String query = "INSERT INTO items (item_id, title, description, category, location, date_posted, status, " +
-                      "posted_by_user_id, image_path, type, date_lost_found, reward) " +
-                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "posted_by_user_id, image_path, type, date_lost_found, reward) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, item.getItemId());
             pstmt.setString(2, item.getTitle());
@@ -63,9 +69,6 @@ public class ItemRepository {
                 FoundItem foundItem = (FoundItem) item;
                 pstmt.setString(11, foundItem.getDateFound().toString());
                 pstmt.setDouble(12, 0.0);
-            } else {
-                pstmt.setString(11, item.getDatePosted().toString());
-                pstmt.setDouble(12, 0.0);
             }
 
             pstmt.executeUpdate();
@@ -79,7 +82,7 @@ public class ItemRepository {
     // Updates an existing item
     public boolean updateItem(Item item) {
         String query = "UPDATE items SET title = ?, description = ?, category = ?, location = ?, " +
-                      "status = ?, image_path = ?, date_lost_found = ?, reward = ? WHERE item_id = ?";
+                "status = ?, image_path = ?, date_lost_found = ?, reward = ? WHERE item_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, item.getTitle());
             pstmt.setString(2, item.getDescription());
@@ -95,9 +98,6 @@ public class ItemRepository {
             } else if (item instanceof FoundItem) {
                 FoundItem foundItem = (FoundItem) item;
                 pstmt.setString(7, foundItem.getDateFound().toString());
-                pstmt.setDouble(8, 0.0);
-            } else {
-                pstmt.setString(7, item.getDatePosted().toString());
                 pstmt.setDouble(8, 0.0);
             }
 
@@ -132,6 +132,7 @@ public class ItemRepository {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Item item = extractItemFromResultSet(rs);
+                // Use the Searchable interface's matches() method to filter items
                 if (item.matches(criteria)) {
                     items.add(item);
                 }
@@ -170,7 +171,7 @@ public class ItemRepository {
         String dateLostFoundStr = rs.getString("date_lost_found");
 
         Item item;
-        if (Objects.equals(type, ItemType.LOST.name())) {
+        if ("LOST".equals(type)) {
             LocalDateTime dateLost = LocalDateTime.parse(dateLostFoundStr);
             double reward = rs.getDouble("reward");
             item = new LostItem(itemId, title, description, category, location, postedByUserId, dateLost, reward);
