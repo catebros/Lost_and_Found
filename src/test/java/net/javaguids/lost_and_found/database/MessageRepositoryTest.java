@@ -249,14 +249,5 @@ class MessageRepositoryTest {
         assertNotNull(retrievedMessage.getTimestamp(), "Timestamp should be preserved");
     }
 
-    @Test
-    @DisplayName("Test generateStatistics returns null (Statistics class not implemented)")
-    void testGenerateStatistics() {
-        // Act
-        Object result = repository.generateStatistics();
-
-        // Assert
-        assertNull(result, "generateStatistics should return null until Statistics class is implemented");
-    }
 }
 

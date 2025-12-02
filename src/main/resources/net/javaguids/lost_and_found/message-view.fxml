@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="net.javaguids.lost_and_found.controllers.MessagesController"
+            prefHeight="850" prefWidth="1200">
+
+    <top>
+        <VBox spacing="10" style="-fx-background-color: #4CAF50; -fx-padding: 15;">
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <Button text="←" onAction="#handleGoBack" prefWidth="40" prefHeight="40"
+                        style="-fx-font-size: 18; -fx-padding: 5; -fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white;"/>
+                <Label text="Messages" textFill="white">
+                    <font>
+                        <Font size="20" name="System Bold"/>
+                    </font>
+                </Label>
+            </HBox>
+        </VBox>
+    </top>
+
+    <left>
+        <VBox fx:id="conversationsPanel" spacing="10" style="-fx-padding: 10;" prefWidth="250" BorderPane.alignment="TOP_CENTER">
+            <ListView fx:id="conversationsList" prefHeight="400" VBox.vgrow="ALWAYS"/>
+        </VBox>
+    </left>
+
+    <center>
+        <VBox spacing="10" style="-fx-padding: 10;" BorderPane.alignment="CENTER">
+            <Label fx:id="conversationLabel" text="Select a conversation">
+                <font>
+                    <Font size="14" name="System Bold"/>
+                </font>
+            </Label>
+
+            <ListView fx:id="messagesListView" prefHeight="350" VBox.vgrow="ALWAYS"
+                      style="-fx-background-color: #f5f5f5;"/>
+
+            <VBox spacing="5">
+                <TextArea fx:id="messageTextArea" promptText="Type your message here..." prefHeight="80" wrapText="true"/>
+                <HBox alignment="CENTER_RIGHT">
+                    <Button fx:id="sendMessageButton" text="Send" onAction="#handleSendMessage" prefWidth="100" styleClass="primary-button"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </center>
+
+</BorderPane>
