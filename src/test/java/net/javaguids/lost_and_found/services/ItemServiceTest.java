@@ -25,15 +25,6 @@ class ItemServiceTest {
         assertNotNull(itemService, "ItemService should be instantiated");
     }
 
-    // TODO: Add more comprehensive tests when ItemRepository is implemented
-    // These tests will verify:
-    // - postItem() saves valid items and rejects invalid ones
-    // - searchItems() returns matching results
-    // - searchItemsExcludingUser() properly filters user's own items
-    // - getItemById() retrieves correct item
-    // - getItemsByUser() returns user's items
-    // - updateItem() modifies existing items
-    // - deleteItem() removes items
 
     @Test
     void testSearchItems_ReturnsEmptyList() {
