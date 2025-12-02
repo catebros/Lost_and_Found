@@ -193,25 +193,25 @@ public class ClaimItemController {
         try {
             //TODO:FIX
             // Mark current item as resolved
-            //currentItem.setStatus(net.javaguids.lost_and_found.model.enums.ItemStatus.RESOLVED);
-            //boolean itemUpdated = itemRepository.updateItem(currentItem);
+            currentItem.setStatus(net.javaguids.lost_and_found.model.enums.ItemStatus.RESOLVED);
+            boolean itemUpdated = itemRepository.updateItem(currentItem);
 
-            //if (!itemUpdated) {
-           //     AlertUtil.showAlert("Error", "Failed to update current item", Alert.AlertType.ERROR);
-            //    return;
-            //}
+            if (!itemUpdated) {
+                AlertUtil.showAlert("Error", "Failed to update current item", Alert.AlertType.ERROR);
+                return;
+            }
 
             // If a matching item was selected, mark it as resolved too
             if (selectedItemWrapper.getItem() != null) {
                 Item matchingItem = selectedItemWrapper.getItem();
                 matchingItem.setStatus(net.javaguids.lost_and_found.model.enums.ItemStatus.RESOLVED);
                 //TODO: FIX
-                //boolean matchingItemUpdated = itemRepository.updateItem(matchingItem);
+                boolean matchingItemUpdated = itemRepository.updateItem(matchingItem);
 
-                //if (!matchingItemUpdated) {
-                //    AlertUtil.showAlert("Error", "Failed to update matching item", Alert.AlertType.ERROR);
-                 //   return;
-                //}
+                if (!matchingItemUpdated) {
+                    AlertUtil.showAlert("Error", "Failed to update matching item", Alert.AlertType.ERROR);
+                    return;
+                }
             }
 
             AlertUtil.showAlert("Success", "Item claimed successfully!", Alert.AlertType.INFORMATION);

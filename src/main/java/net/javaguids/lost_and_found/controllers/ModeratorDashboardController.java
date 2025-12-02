@@ -189,9 +189,9 @@ public class ModeratorDashboardController {
 
     private void loadItems() {
         //TODO: FIX
-        //List<Item> items = itemRepository.searchItems(null);
-        //ObservableList<Item> observableItems = FXCollections.observableArrayList(items);
-        //itemsTable.setItems(observableItems);
+        List<Item> items = itemRepository.searchItems(null);
+        ObservableList<Item> observableItems = FXCollections.observableArrayList(items);
+        itemsTable.setItems(observableItems);
     }
 
     private void loadConversations() {
@@ -257,8 +257,8 @@ public class ModeratorDashboardController {
 
     private void loadStatistics() {
         //TODO: FIX
-        //List<Item> items = itemRepository.searchItems(null);
-        //totalItemsLabel.setText("Total Items: " + items.size());
+        List<Item> items = itemRepository.searchItems(null);
+        totalItemsLabel.setText("Total Items: " + items.size());
 
         List<Message> allMessages = messageRepository.getAllMessages();
         Set<String> uniqueConversations = new HashSet<>();

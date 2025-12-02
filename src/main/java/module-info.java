@@ -17,6 +17,9 @@ module net.javaguids.lost_and_found {
     opens net.javaguids.lost_and_found.model.enums to org.junit.platform.commons;
     opens net.javaguids.lost_and_found.database to org.junit.platform.commons;
     opens net.javaguids.lost_and_found.exceptions to org.junit.platform.commons;
+
+    exports net.javaguids.lost_and_found.controllers to javafx.fxml;
+    opens net.javaguids.lost_and_found.controllers to javafx.fxml;
     
     exports net.javaguids.lost_and_found;
     exports net.javaguids.lost_and_found.model.users;

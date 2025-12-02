@@ -7,7 +7,6 @@ import javafx.stage.Stage;
 import net.javaguids.lost_and_found.model.users.User;
 import net.javaguids.lost_and_found.services.AuthService;
 
-    // Import statements for User and AuthService, assuming they exist in the specified packages ToDo: create these classes
 
 import java.io.IOException;
 
@@ -26,7 +25,7 @@ public class NavigationManager {
 
     public static void navigateTo(String fxmlFile, String title) {
         try {
-            FXMLLoader loader = new FXMLLoader(NavigationManager.class.getResource("/net/javaguids/java_final_project/" + fxmlFile));
+            FXMLLoader loader = new FXMLLoader(NavigationManager.class.getResource("/net/javaguids/lost_and_found/" + fxmlFile));
             Parent root = loader.load();
             Scene scene = new Scene(root, WIDTH, HEIGHT);
             primaryStage.setScene(scene);

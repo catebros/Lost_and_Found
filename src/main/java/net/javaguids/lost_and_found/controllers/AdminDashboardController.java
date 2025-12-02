@@ -379,20 +379,19 @@ public class AdminDashboardController {
         usersTable.setItems(observableUsers);
     }
 
-        //TODO: FIX
+
     // load all items from the database and populate the items table
     private void loadItems() {
-        //List<Item> items = itemRepository.searchItems(null);
-        //ObservableList<Item> observableItems = FXCollections.observableArrayList(items);
-        //itemsTable.setItems(observableItems);
+        List<Item> items = itemRepository.searchItems(null);
+        ObservableList<Item> observableItems = FXCollections.observableArrayList(items);
+        itemsTable.setItems(observableItems);
     }
 
     // load statistics such as total users and total items
     private void loadStatistics() {
-        //TODO: FIX
-        //Statistics stats = messageRepository.generateStatistics();
-        //totalUsersLabel.setText("Total Users: " + stats.getTotalUsers());
-        //totalItemsLabel.setText("Total Items: " + stats.getTotalItems());
+        Statistics stats = messageRepository.generateStatistics();
+        totalUsersLabel.setText("Total Users: " + stats.getTotalUsers());
+        totalItemsLabel.setText("Total Items: " + stats.getTotalItems());
     }
 
     // Handles the create user button click to navigate to the create user view
