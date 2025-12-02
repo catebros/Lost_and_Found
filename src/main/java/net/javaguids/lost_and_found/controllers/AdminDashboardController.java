@@ -296,8 +296,8 @@ public class AdminDashboardController {
     // Handles viewing statistics 
     @FXML
     public void handleViewStatistics() {
-        //Statistics stats = messageRepository.generateStatistics();
-        //AlertUtil.showAlert("Statistics", stats.generateReport(), Alert.AlertType.INFORMATION);
+        Statistics stats = messageRepository.generateStatistics();
+        AlertUtil.showAlert("Statistics", stats.generateReport(), Alert.AlertType.INFORMATION);
     }
 
     // Handles going back to the previous view using NavigationManager
