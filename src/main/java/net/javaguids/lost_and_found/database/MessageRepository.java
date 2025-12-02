@@ -186,48 +186,46 @@ public class MessageRepository {
     }
 
     // TODO: Need to implement Statistics class first
-    public Object generateStatistics() {
-        // Statistics stats = new Statistics();
-        //
-        // try (Statement stmt = connection.createStatement()) {
-        //     ResultSet rs = stmt.executeQuery("SELECT COUNT(*) as count FROM users");
-        //     if (rs.next()) {
-        //         stats.setTotalUsers(rs.getInt("count"));
-        //     }
-        //
-        //     rs = stmt.executeQuery("SELECT COUNT(*) as count FROM items");
-        //     if (rs.next()) {
-        //         stats.setTotalItems(rs.getInt("count"));
-        //     }
-        //
-        //     rs = stmt.executeQuery("SELECT COUNT(*) as count FROM items WHERE type = 'LOST'");
-        //     if (rs.next()) {
-        //         stats.setTotalLostItems(rs.getInt("count"));
-        //     }
-        //
-        //     rs = stmt.executeQuery("SELECT COUNT(*) as count FROM items WHERE type = 'FOUND'");
-        //     if (rs.next()) {
-        //         stats.setTotalFoundItems(rs.getInt("count"));
-        //     }
-        //
-        //     rs = stmt.executeQuery("SELECT COUNT(*) as count FROM items WHERE status = 'RESOLVED'");
-        //     if (rs.next()) {
-        //         stats.setSuccessfulMatches(rs.getInt("count"));
-        //     }
-        //
-        //     Map<String, Integer> itemsByCategory = new HashMap<>();
-        //     rs = stmt.executeQuery("SELECT category, COUNT(*) as count FROM items GROUP BY category");
-        //     while (rs.next()) {
-        //         itemsByCategory.put(rs.getString("category"), rs.getInt("count"));
-        //     }
-        //     stats.setItemsByCategory(itemsByCategory);
-        //
-        // } catch (SQLException e) {
-        //     e.printStackTrace();
-        // }
-        //
-        // return stats;
+    public Statistics generateStatistics() {
+        Statistics stats = new Statistics();
         
-        return null;
+         try (Statement stmt = connection.createStatement()) {
+             ResultSet rs = stmt.executeQuery("SELECT COUNT(*) as count FROM users");
+             if (rs.next()) {
+                 stats.setTotalUsers(rs.getInt("count"));
+             }
+        
+             rs = stmt.executeQuery("SELECT COUNT(*) as count FROM items");
+             if (rs.next()) {
+                 stats.setTotalItems(rs.getInt("count"));
+             }
+        
+             rs = stmt.executeQuery("SELECT COUNT(*) as count FROM items WHERE type = 'LOST'");
+             if (rs.next()) {
+                 stats.setTotalLostItems(rs.getInt("count"));
+             }
+        
+             rs = stmt.executeQuery("SELECT COUNT(*) as count FROM items WHERE type = 'FOUND'");
+             if (rs.next()) {
+                 stats.setTotalFoundItems(rs.getInt("count"));
+             }
+        
+             rs = stmt.executeQuery("SELECT COUNT(*) as count FROM items WHERE status = 'RESOLVED'");
+             if (rs.next()) {
+                 stats.setSuccessfulMatches(rs.getInt("count"));
+             }
+        
+             Map<String, Integer> itemsByCategory = new HashMap<>();
+             rs = stmt.executeQuery("SELECT category, COUNT(*) as count FROM items GROUP BY category");
+             while (rs.next()) {
+                 itemsByCategory.put(rs.getString("category"), rs.getInt("count"));
+             }
+             stats.setItemsByCategory(itemsByCategory);
+        
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+        
+         return stats;
     }
 }

@@ -1,34 +1,24 @@
 package net.javaguids.lost_and_found.database;
 
+import net.javaguids.lost_and_found.model.items.Item;
+import net.javaguids.lost_and_found.model.items.LostItem;
+import net.javaguids.lost_and_found.model.items.FoundItem;
+import net.javaguids.lost_and_found.model.enums.ItemStatus;
+import net.javaguids.lost_and_found.search.SearchCriteria;
+
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 
-/**
- * Repository responsible for persisting and retrieving {@link Item} entities.
- * <p>
- * Implements the Singleton pattern to ensure a single instance interacts with
- * the underlying SQLite database managed by {@link DatabaseManager}.
- * </p>
- */
 public class ItemRepository {
-    /** Singleton instance. */
     private static ItemRepository instance;
-    /** Shared database connection. */
     private final Connection connection;
 
     private ItemRepository() {
-        this.connection = net.javaguids.lost_and_found.database.DatabaseManager.getInstance().getConnection();
+        this.connection = DatabaseManager.getInstance().getConnection();
     }
 
-    /**
-     * Returns the shared {@link ItemRepository} instance.
-     *
-     * @return singleton instance
-     */
     public static ItemRepository getInstance() {
         if (instance == null) {
             instance = new ItemRepository();
@@ -36,12 +26,6 @@ public class ItemRepository {
         return instance;
     }
 
-    /**
-     * Retrieves an item by its identifier.
-     *
-     * @param itemId item identifier
-     * @return matching {@link Item} or {@code null} if not found
-     */
     public Item getItemById(String itemId) {
         String query = "SELECT * FROM items WHERE item_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -56,16 +40,10 @@ public class ItemRepository {
         return null;
     }
 
-    /**
-     * Persists a new item in the database.
-     *
-     * @param item domain item to persist
-     * @return {@code true} when the insert succeeds
-     */
     public boolean saveItem(Item item) {
         String query = "INSERT INTO items (item_id, title, description, category, location, date_posted, status, " +
-                      "posted_by_user_id, image_path, type, date_lost_found, reward) " +
-                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "posted_by_user_id, image_path, type, date_lost_found, reward) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, item.getItemId());
             pstmt.setString(2, item.getTitle());
@@ -86,9 +64,6 @@ public class ItemRepository {
                 FoundItem foundItem = (FoundItem) item;
                 pstmt.setString(11, foundItem.getDateFound().toString());
                 pstmt.setDouble(12, 0.0);
-            } else {
-                pstmt.setString(11, item.getDatePosted().toString());
-                pstmt.setDouble(12, 0.0);
             }
 
             pstmt.executeUpdate();
@@ -99,15 +74,9 @@ public class ItemRepository {
         }
     }
 
-    /**
-     * Updates an existing item with new information.
-     *
-     * @param item domain item containing latest information
-     * @return {@code true} when the update succeeds
-     */
     public boolean updateItem(Item item) {
         String query = "UPDATE items SET title = ?, description = ?, category = ?, location = ?, " +
-                      "status = ?, image_path = ?, date_lost_found = ?, reward = ? WHERE item_id = ?";
+                "status = ?, image_path = ?, date_lost_found = ?, reward = ? WHERE item_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, item.getTitle());
             pstmt.setString(2, item.getDescription());
@@ -124,9 +93,6 @@ public class ItemRepository {
                 FoundItem foundItem = (FoundItem) item;
                 pstmt.setString(7, foundItem.getDateFound().toString());
                 pstmt.setDouble(8, 0.0);
-            } else {
-                pstmt.setString(7, item.getDatePosted().toString());
-                pstmt.setDouble(8, 0.0);
             }
 
             pstmt.setString(9, item.getItemId());
@@ -138,12 +104,6 @@ public class ItemRepository {
         }
     }
 
-    /**
-     * Removes an item from the database.
-     *
-     * @param itemId identifier of the item to delete
-     * @return {@code true} when the delete succeeds
-     */
     public boolean deleteItem(String itemId) {
         String query = "DELETE FROM items WHERE item_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -156,12 +116,6 @@ public class ItemRepository {
         }
     }
 
-    /**
-     * Searches items using high-level {@link SearchCriteria}.
-     *
-     * @param criteria optional filters (keyword, location, status, type)
-     * @return list of matching items
-     */
     public List<Item> searchItems(SearchCriteria criteria) {
         List<Item> items = new ArrayList<>();
         String query = "SELECT * FROM items";
@@ -170,6 +124,7 @@ public class ItemRepository {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Item item = extractItemFromResultSet(rs);
+                // Use the Searchable interface's matches() method to filter items
                 if (item.matches(criteria)) {
                     items.add(item);
                 }
@@ -180,12 +135,6 @@ public class ItemRepository {
         return items;
     }
 
-    /**
-     * Retrieves every item posted by a specific user.
-     *
-     * @param userId identifier of the author
-     * @return list of their items
-     */
     public List<Item> getItemsByUser(String userId) {
         List<Item> items = new ArrayList<>();
         String query = "SELECT * FROM items WHERE posted_by_user_id = ?";
@@ -201,10 +150,6 @@ public class ItemRepository {
         return items;
     }
 
-    /**
-     * Maps the current {@link ResultSet} row into a concrete {@link Item}
-     * implementation (LostItem / FoundItem).
-     */
     private Item extractItemFromResultSet(ResultSet rs) throws SQLException {
         String itemId = rs.getString("item_id");
         String title = rs.getString("title");
@@ -216,7 +161,7 @@ public class ItemRepository {
         String dateLostFoundStr = rs.getString("date_lost_found");
 
         Item item;
-        if (Objects.equals(type, ItemType.LOST.name())) {
+        if ("LOST".equals(type)) {
             LocalDateTime dateLost = LocalDateTime.parse(dateLostFoundStr);
             double reward = rs.getDouble("reward");
             item = new LostItem(itemId, title, description, category, location, postedByUserId, dateLost, reward);
@@ -228,244 +173,5 @@ public class ItemRepository {
         item.setStatus(ItemStatus.valueOf(rs.getString("status")));
         item.setImagePath(rs.getString("image_path"));
         return item;
-    }
-    /**
-     * Represents the allowed status values for repository items.
-     */
-    public enum ItemStatus {
-        ACTIVE,
-        CLAIMED,
-        RESOLVED
-    }
-
-    /**
-     * Categorization for lost vs. found items.
-     */
-    public enum ItemType {
-        LOST,
-        FOUND
-    }
-
-    /**
-     * Immutable search criteria with builder-style construction.
-     */
-    public static class SearchCriteria {
-        private final String keyword;
-        private final String location;
-        private final ItemStatus status;
-        private final ItemType type;
-
-        private SearchCriteria(Builder builder) {
-            this.keyword = builder.keyword;
-            this.location = builder.location;
-            this.status = builder.status;
-            this.type = builder.type;
-        }
-
-        public String getKeyword() {
-            return keyword;
-        }
-
-        public String getLocation() {
-            return location;
-        }
-
-        public ItemStatus getStatus() {
-            return status;
-        }
-
-        public ItemType getType() {
-            return type;
-        }
-
-        /**
-         * Builder for {@link SearchCriteria}.
-         */
-        public static class Builder {
-            private String keyword;
-            private String location;
-            private ItemStatus status;
-            private ItemType type;
-
-            public Builder keyword(String keyword) {
-                this.keyword = keyword;
-                return this;
-            }
-
-            public Builder location(String location) {
-                this.location = location;
-                return this;
-            }
-
-            public Builder status(ItemStatus status) {
-                this.status = status;
-                return this;
-            }
-
-            public Builder type(ItemType type) {
-                this.type = type;
-                return this;
-            }
-
-            public SearchCriteria build() {
-                return new SearchCriteria(this);
-            }
-        }
-    }
-
-    /**
-     * Contract describing an object that can be matched against {@link SearchCriteria}.
-     */
-    public interface Searchable {
-        boolean matches(SearchCriteria criteria);
-    }
-
-    /**
-     * Base class for all item variants persisted by the repository.
-     */
-    public static abstract class Item implements Searchable {
-        private final String itemId;
-        private final String title;
-        private final String description;
-        private final String category;
-        private final String location;
-        private final String postedByUserId;
-        private final LocalDateTime datePosted;
-        private final ItemType type;
-        private ItemStatus status;
-        private String imagePath;
-
-        protected Item(String itemId,
-                       String title,
-                       String description,
-                       String category,
-                       String location,
-                       String postedByUserId,
-                       ItemType type) {
-            this.itemId = itemId != null ? itemId : UUID.randomUUID().toString();
-            this.title = title;
-            this.description = description;
-            this.category = category;
-            this.location = location;
-            this.postedByUserId = postedByUserId;
-            this.type = type;
-            this.datePosted = LocalDateTime.now();
-            this.status = ItemStatus.ACTIVE;
-        }
-
-        public String getItemId() {
-            return itemId;
-        }
-
-        public String getTitle() {
-            return title;
-        }
-
-        public String getDescription() {
-            return description;
-        }
-
-        public String getCategory() {
-            return category;
-        }
-
-        public String getLocation() {
-            return location;
-        }
-
-        public String getPostedByUserId() {
-            return postedByUserId;
-        }
-
-        public LocalDateTime getDatePosted() {
-            return datePosted;
-        }
-
-        public ItemStatus getStatus() {
-            return status;
-        }
-
-        public void setStatus(ItemStatus status) {
-            this.status = status;
-        }
-
-        public String getImagePath() {
-            return imagePath;
-        }
-
-        public void setImagePath(String imagePath) {
-            this.imagePath = imagePath;
-        }
-
-        public ItemType getType() {
-            return type;
-        }
-
-        @Override
-        public boolean matches(SearchCriteria criteria) {
-            if (criteria == null) {
-                return true;
-            }
-            boolean matchesKeyword = criteria.getKeyword() == null ||
-                                     title.toLowerCase().contains(criteria.getKeyword().toLowerCase()) ||
-                                     description.toLowerCase().contains(criteria.getKeyword().toLowerCase());
-            boolean matchesLocation = criteria.getLocation() == null ||
-                                      Objects.equals(location, criteria.getLocation());
-            boolean matchesStatus = criteria.getStatus() == null ||
-                                    status == criteria.getStatus();
-            boolean matchesType = criteria.getType() == null || type == criteria.getType();
-            return matchesKeyword && matchesLocation && matchesStatus && matchesType;
-        }
-    }
-
-    /**
-     * Represents an item reported as lost by a user.
-     */
-    public static final class LostItem extends Item {
-        private final LocalDateTime dateLost;
-        private final double reward;
-
-        public LostItem(String itemId,
-                        String title,
-                        String description,
-                        String category,
-                        String location,
-                        String postedByUserId,
-                        LocalDateTime dateLost,
-                        double reward) {
-            super(itemId, title, description, category, location, postedByUserId, ItemType.LOST);
-            this.dateLost = dateLost;
-            this.reward = reward;
-        }
-
-        public LocalDateTime getDateLost() {
-            return dateLost;
-        }
-
-        public double getReward() {
-            return reward;
-        }
-    }
-
-    /**
-     * Represents an item that someone has found.
-     */
-    public static final class FoundItem extends Item {
-        private final LocalDateTime dateFound;
-
-        public FoundItem(String itemId,
-                         String title,
-                         String description,
-                         String category,
-                         String location,
-                         String postedByUserId,
-                         LocalDateTime dateFound) {
-            super(itemId, title, description, category, location, postedByUserId, ItemType.FOUND);
-            this.dateFound = dateFound;
-        }
-
-        public LocalDateTime getDateFound() {
-            return dateFound;
-        }
     }
 }
