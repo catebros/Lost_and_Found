@@ -27,7 +27,6 @@ module net.javaguids.lost_and_found {
     exports net.javaguids.lost_and_found.database;
     exports net.javaguids.lost_and_found.exceptions;
 
-    exports net.javaguids.lost_and_found.controllers;
     exports net.javaguids.lost_and_found.model.items;
     exports net.javaguids.lost_and_found.model.interfaces;
     exports net.javaguids.lost_and_found.services;
